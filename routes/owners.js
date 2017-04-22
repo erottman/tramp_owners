@@ -6,7 +6,7 @@ const db = require('../db/connection.js');
 router.get('/', (req, res, next) => {
   db('owners')
   .then(owners => {
-    res.json({ owners })
+    res.json(owners)
   })
   .catch(err => {
     console.log(err);
@@ -20,7 +20,7 @@ router.get('/:id', (req, res, next) => {
   .where({id})
   .first()
   .then(owner => {
-    res.json({owner})
+    res.json(owner)
   })
   .catch(err => {
     console.log(err);
