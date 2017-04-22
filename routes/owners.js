@@ -45,11 +45,54 @@ router.post('/', (req, res, next) => {
   .insert(owner, '*')
   .then(owner => {
     let id = owner[0].id
-    res.json({id})
+    res.json(owner)
   })
   .catch(err => {
     console.log(err);
   })
 })
+
+router.put('/:id', (req,res,next) => {
+  let id = req.params.id
+  let owner = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      address_line_1: req.body.address_line_1,
+      address_line_2: req.body.address_line_2,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip ,
+      phone_number: req.body.phone_number,
+      email_address: req.body.email_address,
+      user_id: req.body.user_id,
+  }
+  db('owners')
+  .update(owner, '*')
+  .where({id})
+  .returning('*')
+  .then(updated => {
+    res.json(updated)
+  })
+  .catch(err => {
+    console.log(err);
+  })
+})
+
+
+  router.delete('/:id', (req, res, next) => {
+    let id = req.params.id
+    db('owners')
+    .del()
+    .where({ id })
+    .returning('*')
+    .then(deleted => {
+      res.json(deleted)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  })
+
+
 
 module.exports = router;
